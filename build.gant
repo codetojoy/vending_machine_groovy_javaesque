@@ -1,0 +1,98 @@
+
+ant.property( file : 'build.properties' )
+
+final classDir = ant.project.properties.'classes.dir'
+final mainApp = ant.project.properties.'main.app'
+final dataDir = ant.project.properties.'data.dir'
+final groovyHome = ant.project.properties.'groovy.home'
+
+// clean (implicit target)
+includeTargets << gant.targets.Clean
+cleanDirectory << ant.project.properties.'classes.dir'
+
+// init
+target( init : '' ) { 
+    path( id : 'run.classpath' ) {
+        pathelement( location : '${classes.dir}' )
+        pathelement( location : "${groovyHome}/embedded/groovy-all-1.6-beta-1.jar" )
+        pathelement( location : "${groovyHome}/lib/groovy-1.6-beta-1.jar" )
+        pathelement( location : "${groovyHome}/lib/asm-2.2.3.jar" )
+        pathelement( location : "${groovyHome}/lib/asm-analysis-2.2.3.jar" )
+        pathelement( location : "${groovyHome}/lib/asm-test-2.2.3.jar" )
+        pathelement( location : "${groovyHome}/lib/asm-util-2.2.3.jar" )
+        pathelement( location : "${groovyHome}/lib/antlr-2.7.7.jar" )
+    }
+    path( id : 'test.classpath' ) {
+        pathelement( location : '${classes.dir}' )
+        pathelement( location : "${groovyHome}/embedded/groovy-all-1.6-beta-1.jar" )
+        pathelement( location : "${groovyHome}/groovy-1.6-beta-1/lib/junit-3.8.2.jar" )
+    }    
+    path( id : 'build.classpath' ) {
+        pathelement( location : '${classes.dir}' )
+        pathelement( location : "${groovyHome}/embedded/groovy-all-1.6-beta-1.jar" )
+        pathelement( location : "${groovyHome}/groovy-1.6-beta-1/lib/commons-cli-1.0.jar" )
+    }    
+}
+
+final performCompile = { sourceDir ->
+	classpathRef = 'build.classpath'
+	ant.mkdir ( dir : classDir )
+	ant.taskdef ( name : 'groovyc' , classname : 'org.codehaus.groovy.ant.Groovyc' , classpathref : classpathRef )
+	ant.groovyc ( srcdir : sourceDir , destdir : classDir , fork : 'false', failonerror : 'true' ) {
+		classpath {
+			pathelement ( location : classDir )
+		}
+		javac ( source : '1.5' , target : '1.5' , debug : 'on' )
+	}
+}
+
+// compile
+target( compile : 'compile' ) {
+    depends( init, clean )
+
+    performCompile( '${src.dir}' )
+    performCompile( '${test.src.dir}' )
+}
+
+target( test : 'run all tests' ) {
+	depends( compile ) 
+	
+	ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
+        ant.classpath() {
+	        ant.pathelement( location : '${classes.dir}')
+	        ant.path( refid : 'test.classpath' )
+	        ant.fileset( dir : "${groovyHome}/lib") {
+	                ant.include( name : '**/*.jar' )
+	        }
+        }
+
+		ant.batchtest( fork:'yes' ) {
+			ant.fileset( dir : classDir ) {
+				ant.include( name : '**/*Test*.*' )
+			}
+		} 
+	}
+}
+
+// runs each data file in $data.dir
+target( run : 'run app for each data file in $data.dir' ) {
+	depends( compile ) 
+	
+	def runLog = new File("run.log").newWriter()
+	
+	new File(dataDir).eachFile { dataFile ->
+		ant.java( classname:"${mainApp}" ) {
+	        ant.classpath() {
+		        ant.pathelement( location : '${classes.dir}')
+		        ant.path( refid : 'run.classpath' )
+	        }
+			ant.arg( value: dataFile )
+		}
+		runLog << "${dataFile} ok\n"				
+	}
+	
+	runLog.close()
+}
+
+setDefaultTarget( run )
+
