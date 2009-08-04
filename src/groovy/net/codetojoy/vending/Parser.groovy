@@ -6,14 +6,13 @@ import net.codetojoy.vending.action.*
 class Parser {
 	def shell = new GroovyShell(new Binding())
 	def actionMap = [:]
-	def actions = new Actions()
 	
 	public Parser() {
-		actionMap['N'] = actions.coinAction.curry(MoneyState.NICKEL)
-		actionMap['D'] = actions.coinAction.curry(MoneyState.DIME)
-		actionMap['Q'] = actions.coinAction.curry(MoneyState.QUARTER)
-		actionMap['\$'] = actions.coinAction.curry(MoneyState.DOLLAR)		
-		actionMap['COIN_RETURN'] = actions.coinReturnAction
+		actionMap['N'] = new CoinAction(MoneyState.NICKEL)
+		actionMap['D'] = new CoinAction(MoneyState.DIME)
+		actionMap['Q'] = new CoinAction(MoneyState.QUARTER)
+		actionMap['\$'] = new CoinAction(MoneyState.DOLLAR)
+		actionMap['COIN_RETURN'] = new CoinReturnAction()
 	}
 	
 	// returns a list of actions
@@ -76,7 +75,10 @@ class Parser {
 			def moneyState = new MoneyState(coinList)
 			
 			def inventoryStr = "[${m[0][2]}]"
-			def inventory = new InventoryState(inventoryStr)
+			def inventoryMap = shell.evaluate(inventoryStr)
+			def inventory = new InventoryState(inventoryMap)
+			println "HELLO map: " + inventoryMap.toString()
+			println inventory.toString() + " *****************"
 			action = new ServiceAction(moneyState, inventory)
 		}
 		
@@ -91,7 +93,7 @@ class Parser {
 
         if (m.matches()) {
 			def item = m[0][1]
-			action =  actions.getGetAction().curry(item)
+			action = new GetAction(item)
 		}
 		
 		return action						

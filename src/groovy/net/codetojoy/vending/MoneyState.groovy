@@ -14,7 +14,13 @@ class MoneyState {
 	final int numQuarters
 	final int numDollars
 	
-	// assume incoming values are legal: [ N, D, Q, $ ]
+	// assume incoming values are legal
+	MoneyState(numNickels, numDimes, numQuarters, numDollars) {
+		this.numNickels = numNickels
+		this.numDimes = numDimes
+		this.numQuarters = numQuarters
+		this.numDollars = numDollars
+	}
 	
 	MoneyState(def coinList) {
 		assert 4 == coinList.size()
@@ -39,7 +45,7 @@ class MoneyState {
 		int numDimes = this.numDimes + rhs.numDimes
 		int numQuarters = this.numQuarters + rhs.numQuarters
 		int numDollars = this.numDollars + rhs.numDollars
-		def result = new MoneyState( [ numNickels, numDimes, numQuarters, numDollars ] )
+		def result = new MoneyState(numNickels, numDimes, numQuarters, numDollars)
 		return result
 	}
 	
@@ -61,10 +67,9 @@ class MoneyState {
 	// ------------------------------------------------------------------
 
 	// assume total is in cents
-	// return dollars as quarters
 	protected MoneyState(int total) {
 		def dollarResult = divAndRemainder(total, 100)
-		this.numDollars =  dollarResult['div']
+		this.numDollars = dollarResult['div']
 		int remainder = dollarResult['remainder']
 		
 		def quarterResult = divAndRemainder(remainder, 25)

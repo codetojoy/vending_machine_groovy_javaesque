@@ -7,9 +7,9 @@ class MoneyStateTestCase extends GroovyTestCase {
 	def numQuarters = 80    // $20
 	def numDollars = 7      // $7
 	
-	def moneyState = new MoneyState( [ numNickels, numDimes, numQuarters, numDollars ] )
+	def moneyState = new MoneyState(numNickels, numDimes, numQuarters, numDollars)
 	
-	def normalizedState = new MoneyState( [ 1, 1, 2, 2 ] )
+	def normalizedState = new MoneyState(1, 1, 2, 2)
 	
 	def zeroState = MoneyState.ZERO
 	
@@ -89,7 +89,7 @@ class MoneyStateTestCase extends GroovyTestCase {
 	}	
 	
 	void testEquals_Zero() {
-		def moneyState2 = new MoneyState( [numNickels, numDimes, numQuarters, numDollars] )
+		def moneyState2 = new MoneyState(numNickels, numDimes, numQuarters, numDollars)
 		assert moneyState2.equals(moneyState)
 	}
 
@@ -126,36 +126,36 @@ class MoneyStateTestCase extends GroovyTestCase {
 	}
 	
 	void testSubtract_Basic2() {
-		def x = new MoneyState([1,0,0,0])
-		def expected = new MoneyState([0,1,2,2])
+		def x = new MoneyState(1,0,0,0)
+		def expected = new MoneyState(0,1,2,2)
 		def result = normalizedState.subtract(x)
 		assert result.equals(expected)
 	}
 	
 	void testSubtract_Basic3() {
-		def x = new MoneyState([1,1,0,0])
-		def expected = new MoneyState([0,0,2,2])
+		def x = new MoneyState(1,1,0,0)
+		def expected = new MoneyState(0,0,2,2)
 		def result = normalizedState.subtract(x)
 		assert result.equals(expected)
 	}
 
 	void testSubtract_Basic4() {
-		def x = new MoneyState([1,1,1,0])
-		def expected = new MoneyState([0,0,1,2])
+		def x = new MoneyState(1,1,1,0)
+		def expected = new MoneyState(0,0,1,2)
 		def result = normalizedState.subtract(x)
 		assert result.equals(expected)
 	}
 
 	void testSubtract_Basic5() {
-		def x = new MoneyState([0,0,1,1])
-		def expected = new MoneyState([1,1,1,1])
+		def x = new MoneyState(0,0,1,1)
+		def expected = new MoneyState(1,1,1,1)
 		def result = normalizedState.subtract(x)
 		assert result.equals(expected)
 	}
 
 	void testSubtract_Basic6() {
-		def x = new MoneyState([0,0,2,2])
-		def expected = new MoneyState([1,1,0,0])
+		def x = new MoneyState(0,0,2,2)
+		def expected = new MoneyState(1,1,0,0)
 		def result = normalizedState.subtract(x)
 		assert result.equals(expected)
 	}

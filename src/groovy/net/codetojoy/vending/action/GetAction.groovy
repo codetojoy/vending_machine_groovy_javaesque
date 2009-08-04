@@ -9,7 +9,7 @@ class GetAction {
 	GetAction(String item) { this.item = item }
 		
 	def apply(MachineState machineState) {
-		println "HELLO from GetAction"
-		def result = machineState.getItem(item)
+		def result = machineState.getItem(item, machineState)
+		assert true == result
 	}
 }

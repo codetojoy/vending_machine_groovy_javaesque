@@ -6,58 +6,38 @@ import net.codetojoy.vending.action.*
 class ParserTestCase extends GroovyTestCase {
 	def parser = new Parser()
 	
-	void assertCoinAction(MoneyState expected, def action) {
-		def machineState = new MachineState()
-		action(machineState)
-		assert expected == machineState.insertedMoney
-	}
-
-	void assertCoinReturnAction(def action) {
-		def machineState = new MachineState()
-		action(machineState)
-		assert MoneyState.ZERO == machineState.insertedMoney
-	}	
-	
-	void assertGetAction(def action) {
-		def machineState = new MachineState()
-		def inventoryStr = "[ N:'A', P:'65', C:'10'] ]"
-		machineState.inventoryState = new InventoryState(inventoryStr)
-		action(machineState)
-		asssert inventoryStr == machineState.inventoryState 
-	}
-	
 	void testParser_Basic() {
 		def input = "n , d , q , \$ , coin_return"
 		def actions = parser.parse(input)
 		assert 5 == actions.size()
-		assertCoinAction(MoneyState.NICKEL, actions[0])
-		assertCoinAction(MoneyState.DIME, actions[1])
-		assertCoinAction(MoneyState.QUARTER, actions[2])
-		assertCoinAction(MoneyState.DOLLAR, actions[3])
-		assertCoinReturnAction(actions[4])
+		assert MoneyState.NICKEL == actions[0].moneyState
+		assert MoneyState.DIME == actions[1].moneyState
+		assert MoneyState.QUARTER == actions[2].moneyState
+		assert MoneyState.DOLLAR == actions[3].moneyState
+		assert actions[4] instanceof CoinReturnAction
 	}
 
 	void testParser_Basic2() {
 		def input = "n , d , q , \$ , service [3,4,5,6] [] , coin_return"
 		def actions = parser.parse(input)
 		assert 6 == actions.size()
-		assertCoinAction(MoneyState.NICKEL, actions[0])
-		assertCoinAction(MoneyState.DIME, actions[1])
-		assertCoinAction(MoneyState.QUARTER, actions[2])
-		assertCoinAction(MoneyState.DOLLAR, actions[3])
-		def expectedState = new MoneyState([3,4,5,6])
+		assert MoneyState.NICKEL == actions[0].moneyState
+		assert MoneyState.DIME == actions[1].moneyState
+		assert MoneyState.QUARTER == actions[2].moneyState
+		assert MoneyState.DOLLAR == actions[3].moneyState
+		def expectedState = new MoneyState(3,4,5,6)
 		assert expectedState == actions[4].availableChange
-		assertCoinReturnAction(actions[5])
+		assert actions[5] instanceof CoinReturnAction
 	}
 
 	void testParser_Basic3() {
 		def input = "n , n , n , n , get 2"
 		def actions = parser.parse(input)
 		assert 5 == actions.size()
-		assertCoinAction(MoneyState.NICKEL, actions[0])
-		assertCoinAction(MoneyState.NICKEL, actions[1])
-		assertCoinAction(MoneyState.NICKEL, actions[2])
-		assertCoinAction(MoneyState.NICKEL, actions[3])
+		assert MoneyState.NICKEL == actions[0].moneyState
+		assert MoneyState.NICKEL == actions[1].moneyState
+		assert MoneyState.NICKEL == actions[2].moneyState
+		assert MoneyState.NICKEL == actions[3].moneyState
 		assert actions[4] instanceof GetAction
 		assert "2" == actions[4].item
 	}
@@ -73,32 +53,32 @@ class ParserTestCase extends GroovyTestCase {
 
 	void testParseOneInput_Nickel() {
 		def action = parser.parseOneInput("N")
-		assertCoinAction(MoneyState.NICKEL, action)
+		assert MoneyState.NICKEL == action.moneyState
 	}
 
 	void testParseOneInput_Dime() {
 		def action = parser.parseOneInput("D")
-		assertCoinAction(MoneyState.DIME, action)
+		assert MoneyState.DIME == action.moneyState
 	}
 
 	void testParseOneInput_Quarter() {
 		def action = parser.parseOneInput("Q")
-		assertCoinAction(MoneyState.QUARTER, action)
+		assert MoneyState.QUARTER == action.moneyState
 	}
 	
 	void testParseOneInput_Dollar() {
 		def action = parser.parseOneInput("\$")
-		assertCoinAction(MoneyState.DOLLAR, action)
+		assert MoneyState.DOLLAR == action.moneyState
 	}
 
 	void testParseOneInput_CoinReturn() {
 		def action = parser.parseOneInput("coin_return")
-		assertCoinReturnAction(action)
+		assert action instanceof CoinReturnAction
 	}
 	
 	void testCompoundParse_Service() {
 		def action = parser.compoundParse("SERVICE [1,2,3,4] [ [N:'A', P:'125', C:'99'], [N:'B', P:'33', C:'44'] ] ")
-		def expectedState = new MoneyState([1,2,3,4])
+		def expectedState = new MoneyState(1,2,3,4)
 		assert expectedState.equals(action.availableChange)
 		def expectedInventory = "[ [N:'A', P:'125', C:'99'], [N:'B', P:'33', C:'44'] ]"
 		println "------------ " + action.inventoryState.toString() + "----"

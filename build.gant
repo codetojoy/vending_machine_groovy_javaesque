@@ -35,15 +35,15 @@ target( init : '' ) {
 }
 
 final performCompile = { sourceDir ->
-	classpathRef = 'build.classpath'
-	ant.mkdir ( dir : classDir )
-	ant.taskdef ( name : 'groovyc' , classname : 'org.codehaus.groovy.ant.Groovyc' , classpathref : classpathRef )
-	ant.groovyc ( srcdir : sourceDir , destdir : classDir , fork : 'false', failonerror : 'true' ) {
-		classpath {
-			pathelement ( location : classDir )
-		}
-		javac ( source : '1.5' , target : '1.5' , debug : 'on' )
-	}
+    classpathRef = 'build.classpath'
+    ant.mkdir ( dir : classDir )
+    ant.taskdef ( name : 'groovyc' , classname : 'org.codehaus.groovy.ant.Groovyc' , classpathref : classpathRef )
+    ant.groovyc ( srcdir : sourceDir , destdir : classDir , fork : 'false', failonerror : 'true' ) {
+        classpath {
+            pathelement ( location : classDir )
+        }
+        javac ( source : '1.5' , target : '1.5' , debug : 'on' )
+    }
 }
 
 // compile
@@ -55,43 +55,43 @@ target( compile : 'compile' ) {
 }
 
 target( test : 'run all tests' ) {
-	depends( compile ) 
-	
-	ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
+    depends( compile ) 
+    
+    ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
         ant.classpath() {
-	        ant.pathelement( location : '${classes.dir}')
-	        ant.path( refid : 'test.classpath' )
-	        ant.fileset( dir : "${groovyHome}/lib") {
-	                ant.include( name : '**/*.jar' )
-	        }
+            ant.pathelement( location : '${classes.dir}')
+            ant.path( refid : 'test.classpath' )
+            ant.fileset( dir : "${groovyHome}/lib") {
+                    ant.include( name : '**/*.jar' )
+            }
         }
 
-		ant.batchtest( fork:'yes' ) {
-			ant.fileset( dir : classDir ) {
-				ant.include( name : '**/*Test*.*' )
-			}
-		} 
-	}
+        ant.batchtest( fork:'yes' ) {
+            ant.fileset( dir : classDir ) {
+                ant.include( name : '**/*Test*.*' )
+            }
+        } 
+    }
 }
 
 // runs each data file in $data.dir
 target( run : 'run app for each data file in $data.dir' ) {
-	depends( compile ) 
-	
-	def runLog = new File("run.log").newWriter()
-	
-	new File(dataDir).eachFile { dataFile ->
-		ant.java( classname:"${mainApp}" ) {
-	        ant.classpath() {
-		        ant.pathelement( location : '${classes.dir}')
-		        ant.path( refid : 'run.classpath' )
-	        }
-			ant.arg( value: dataFile )
-		}
-		runLog << "${dataFile} ok\n"				
-	}
-	
-	runLog.close()
+    depends( compile ) 
+    
+    def runLog = new File("run.log").newWriter()
+    
+    new File(dataDir).eachFile { dataFile ->
+        ant.java( classname:"${mainApp}" ) {
+            ant.classpath() {
+                ant.pathelement( location : '${classes.dir}')
+                ant.path( refid : 'run.classpath' )
+            }
+            ant.arg( value: dataFile )
+        }
+        runLog << "${dataFile} ok\n"                
+    }
+    
+    runLog.close()
 }
 
 setDefaultTarget( run )

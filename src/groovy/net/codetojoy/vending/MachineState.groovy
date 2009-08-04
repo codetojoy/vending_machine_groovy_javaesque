@@ -1,6 +1,10 @@
 
 package net.codetojoy.vending
 
+enum Input { NICKEL, DIME, QUARTER, DOLLAR, COIN_RETURN, SERVICE, GET }
+
+enum Output { NICKEL, DIME, QUARTER, VEND }
+
 class MachineState {
 	InventoryState inventoryState = new InventoryState()
 	MoneyState availableChange = MoneyState.ZERO
@@ -13,7 +17,6 @@ class MachineState {
  	boolean getItem(String itemName) {
 		boolean result = false
 		
-		println "CHECKPOINT"
 		def avail = inventoryState.isItemAvailable(itemName)
 		
 		if (avail) {

@@ -6,7 +6,10 @@ class InventoryStateTestCase extends GroovyTestCase {
 	def inventoryState = null
 	
 	public void setUp() {
-		def items = "[ [N:'A', P:'100', C:'10'], [N:'B', P:'400', C:'1'], [N:'C', P:'100', C:'0'] ]"
+		def items = []
+		items << [N:'A', P:'100', C:'10'] 
+		items << [N:'B', P:'400', C:'1'] 
+		items << [N:'C', P:'100', C:'0']
 		inventoryState = new InventoryState(items) 
 	}
 
