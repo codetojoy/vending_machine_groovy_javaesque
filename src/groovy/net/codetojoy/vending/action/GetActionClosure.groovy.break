@@ -1,9 +1,0 @@
-
-package net.codetojoy.vending.action
-
-import net.codetojoy.vending.*
-
-myGetAction = { String item, MachineState machineState ->
-	println "HELLO from GetAction closure"
-	def result = machineState.getItem(item)	
-}
