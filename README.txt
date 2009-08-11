@@ -1,6 +1,7 @@
 
-This is a work-in-progress for the Vending Machine example,
-as highlighted by the Lambda Lounge.
+NOTE: tests are failing! Definitely a work-in-progress
+
+This is a work-in-progress for the Vending Machine example, as highlighted by the Lambda Lounge.
 
 This example uses Groovy, but in a fairly straight-up, Java-esque way.
 
