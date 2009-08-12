@@ -78,9 +78,11 @@ target( test : 'run all tests' ) {
 target( run : 'run app for each data file in $data.dir' ) {
     depends( compile ) 
     
-    def runLog = new File("run.log").newWriter()
-    
+
     new File(dataDir).eachFile { dataFile ->
+	    def errorLog = new File("error.log")
+		errorLog.delete()
+		
         ant.java( classname:"${mainApp}" ) {
             ant.classpath() {
                 ant.pathelement( location : '${classes.dir}')
@@ -88,10 +90,11 @@ target( run : 'run app for each data file in $data.dir' ) {
             }
             ant.arg( value: dataFile )
         }
-        runLog << "${dataFile} ok\n"                
-    }
-    
-    runLog.close()
+
+        if (errorLog.exists()) {
+			ant.fail(message : "found error.log for file: $dataFile")
+		}                 
+    }    
 }
 
 setDefaultTarget( run )

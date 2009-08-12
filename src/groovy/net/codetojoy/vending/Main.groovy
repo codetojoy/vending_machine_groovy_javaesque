@@ -38,8 +38,15 @@ file.eachLine { line ->
                 def actions = parser.parse(input)
                 applyActions(actions, machineState)                 
             } catch(Throwable t) {
-                println ">>>>>>> ERROR! at line ${lineCount}. type ${t.class} msg ${t.message}"
-                println ">>>>>>> ERROR! for line ${input}"
+                def msg1 = ">>>>>>> ERROR! at line ${lineCount}. type ${t.class} msg ${t.message}"
+                def msg2 = ">>>>>>> ERROR! for line ${input}"
+				println msg1
+				println msg2
+				def runLog = new File("error.log").newWriter()
+				runLog << msg1
+				runLog << msg2
+				runLog.close()
+				System.exit(-1)
             }
         }
     }
