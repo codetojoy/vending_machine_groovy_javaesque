@@ -13,10 +13,7 @@ class ServiceAction {
 	}
 		
 	def apply(def machineState) {
-		println "Cp 1"
 		machineState.availableChange = availableChange
-		println "Cp 2"
 		machineState.inventoryState = inventoryState
-		println "Cp 3"
 	}
 }
