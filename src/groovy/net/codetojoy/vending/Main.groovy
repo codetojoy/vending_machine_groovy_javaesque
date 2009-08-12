@@ -7,28 +7,39 @@ def applyActions(def actions, def machineState) {
     }
 }
 
+def isVerbose(def args) {
+	def result = false
+	
+	if (args.length >= 2 && args[1] == "verbose") { result = true }
+	
+	return result
+}
+
 /////////////////////////////////////////
 
 def parser = new Parser()
 def machineState = new MachineState()
 
 def file = new File("${args[0]}")
+def verboseMode = isVerbose(args)
 def lineCount = 1
+def commentRegEx = "^//.*"
 
 file.eachLine { line ->
     def input = line.trim()
-    def commentRegEx = "^//.*"
     
     if (input.size() > 0) {
         def m = input =~ commentRegEx
         
         if (! m.matches()) {
+	        if (verboseMode) { println "$lineCount: $line" }
+	
             try {
                 def actions = parser.parse(input)
                 applyActions(actions, machineState)                 
             } catch(Throwable t) {
-                println ">>>>>>> ERROR! for line ${input[0..8]}"
-                println ">>>>>>> ERROR! at line ${lineCount}. start = ${line[0..8]}. type ${t.class} msg ${t.message}"
+                println ">>>>>>> ERROR! at line ${lineCount}. type ${t.class} msg ${t.message}"
+                println ">>>>>>> ERROR! for line ${input}"
             }
         }
     }

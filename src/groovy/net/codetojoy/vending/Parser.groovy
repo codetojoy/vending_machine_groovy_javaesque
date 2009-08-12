@@ -77,8 +77,6 @@ class Parser {
 			def inventoryStr = "[${m[0][2]}]"
 			def inventoryMap = shell.evaluate(inventoryStr)
 			def inventory = new InventoryState(inventoryMap)
-			println "HELLO map: " + inventoryMap.toString()
-			println inventory.toString() + " *****************"
 			action = new ServiceAction(moneyState, inventory)
 		}
 		
