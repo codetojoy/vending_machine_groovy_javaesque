@@ -80,9 +80,9 @@ target( run : 'run app for each data file in $data.dir' ) {
     
 
     new File(dataDir).eachFile { dataFile ->
-	    def errorLog = new File("error.log")
-		errorLog.delete()
-		
+        def errorLog = new File("error.log")
+        errorLog.delete()
+        
         ant.java( classname:"${mainApp}" ) {
             ant.classpath() {
                 ant.pathelement( location : '${classes.dir}')
@@ -92,8 +92,8 @@ target( run : 'run app for each data file in $data.dir' ) {
         }
 
         if (errorLog.exists()) {
-			ant.fail(message : "found error.log for file: $dataFile")
-		}                 
+            ant.fail(message : "found error.log for file: $dataFile")
+        }                 
     }    
 }
 
