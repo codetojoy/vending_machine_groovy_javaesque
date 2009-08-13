@@ -1,4 +1,5 @@
 
+-- items shouldn't require alphabetical order
 -- change XState to just X
 -- emit results
 -- change Verify to Assert ?

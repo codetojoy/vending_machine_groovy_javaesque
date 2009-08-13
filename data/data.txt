@@ -1,32 +1,31 @@
 
-// TODO: now must separate commands with " , " (spaces)
+// NOTE: must separate commands with " , " (spaces)
 // commands are not case sensitive
 //
 // initial state
 // N = name, P = price, C = count 
-// TODO: the above ARE case sensitive: uppercase only 
 
-SERVICE [50, 50, 50, 50] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+SERVICE [50, 50, 50, 50] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 
-VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 
 Q , Q , Q , Q
 
-VERIFY [50, 50, 50, 50] [0, 0, 4, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+VERIFY [50, 50, 50, 50] [0, 0, 4, 0] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 
 N , D , Q , $ 
 
-VERIFY [50, 50, 50, 50] [1, 1, 5, 1] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+VERIFY [50, 50, 50, 50] [1, 1, 5, 1] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 
 $ , Q , D , N 
 
-VERIFY [50, 50, 50, 50] [2, 2, 6, 2] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+VERIFY [50, 50, 50, 50] [2, 2, 6, 2] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 
 COIN_RETURN 
 
-VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 
-COIN_RETURN , SERVICE [20, 20, 20, 20] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ] , $ , $ 
+COIN_RETURN , SERVICE [20, 20, 20, 20] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ] , $ , $ 
 
-VERIFY [20, 20, 20, 20] [0, 0, 0, 2] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
+VERIFY [20, 20, 20, 20] [0, 0, 0, 2] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'10'] ]
 

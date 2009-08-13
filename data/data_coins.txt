@@ -1,10 +1,9 @@
 
-// TODO: now must separate commands with " , " (spaces)
+// NOTE: must separate commands with " , " (spaces)
 // commands are not case sensitive
 //
 // initial state
 // N = name, P = price, C = count 
-// TODO: the above ARE case sensitive: uppercase only 
 
 SERVICE [50, 50, 50, 50] [ [N:'A', P:'65', C:'10'] ]
 

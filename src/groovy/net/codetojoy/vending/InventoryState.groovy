@@ -17,8 +17,7 @@ public class InventoryState {
         assert item != null
     
         def count = Integer.parseInt(item[COUNT])
-        def newCount = count - 1
-        println "WTH " + newCount
+        def newCount = count - 1     
         item[COUNT] = "${newCount}"
     }
     
@@ -51,9 +50,7 @@ public class InventoryState {
         for (item in inventory) {
             list << item[NAME]
         }
-        
-        println "num = " + list.size() 
-        
+                
         list.sort()
         def noCommaIndex = list.size() - 1 
         def count = 0
