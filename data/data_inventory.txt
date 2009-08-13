@@ -19,7 +19,7 @@ VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDo
 
 // case: item in stock, exact change
 Q , Q , D , N , GET Cashews
-VERIFY [51, 51, 52, 50] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'9'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'0'] ]
+VERIFY [50, 52, 51, 51] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'9'], [N:'DingDongs', P:'100', C:'10'], [N:'HostessFruitPie', P:'150', C:'0'] ]
 
 // TODO: this returns dollars and seems to normalize the availableChange
 // case: item in stock, not exact change

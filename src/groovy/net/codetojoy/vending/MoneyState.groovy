@@ -4,10 +4,10 @@ package net.codetojoy.vending
 class MoneyState {
 	
 	static final MoneyState ZERO = new MoneyState( [0,0,0,0] )
-	static final MoneyState NICKEL = new MoneyState( [1,0,0,0] )
-	static final MoneyState DIME = new MoneyState( [0,1,0,0] )
-	static final MoneyState QUARTER = new MoneyState( [0,0,1,0] )
-	static final MoneyState DOLLAR = new MoneyState( [0,0,0,1] )
+	static final MoneyState NICKEL = new MoneyState( [0,0,0,1] )
+	static final MoneyState DIME = new MoneyState( [0,0,1,0] )
+	static final MoneyState QUARTER = new MoneyState( [0,1,0,0] )
+	static final MoneyState DOLLAR = new MoneyState( [1,0,0,0] )
 	
 	final int numNickels
 	final int numDimes
@@ -15,19 +15,19 @@ class MoneyState {
 	final int numDollars
 	
 	// assume incoming values are legal
-	MoneyState(numNickels, numDimes, numQuarters, numDollars) {
-		this.numNickels = numNickels
-		this.numDimes = numDimes
-		this.numQuarters = numQuarters
+	MoneyState(numDollars, numQuarters, numDimes, numNickels) {
 		this.numDollars = numDollars
+		this.numQuarters = numQuarters
+		this.numDimes = numDimes
+		this.numNickels = numNickels
 	}
 	
 	MoneyState(def coinList) {
 		assert 4 == coinList.size()
-		this.numNickels = coinList[0]
-		this.numDimes = coinList[1]
-		this.numQuarters = coinList[2]
-		this.numDollars = coinList[3]
+		this.numDollars = coinList[0]
+		this.numQuarters = coinList[1]
+		this.numDimes = coinList[2]
+		this.numNickels = coinList[3]
 	}	
 	
 	boolean equals(MoneyState rhs) {
@@ -45,7 +45,7 @@ class MoneyState {
 		int numDimes = this.numDimes + rhs.numDimes
 		int numQuarters = this.numQuarters + rhs.numQuarters
 		int numDollars = this.numDollars + rhs.numDollars
-		def result = new MoneyState(numNickels, numDimes, numQuarters, numDollars)
+		def result = new MoneyState(numDollars, numQuarters, numDimes, numNickels)
 		return result
 	}
 	
@@ -61,7 +61,7 @@ class MoneyState {
 	}
 	
 	String toString() {
-		return "[${numNickels}, ${numDimes}, ${numQuarters}, ${numDollars}]"
+		return "[${numDollars}, ${numQuarters}, ${numDimes}, ${numNickels}]"
 	}
 	
 	// ------------------------------------------------------------------

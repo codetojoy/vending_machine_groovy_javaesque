@@ -77,8 +77,8 @@ class ParserTestCase extends GroovyTestCase {
 	}
 	
 	void testCompoundParse_Service() {
-		def action = parser.compoundParse("SERVICE [1,2,3,4] [ [N:'A', P:'125', C:'99'], [N:'B', P:'33', C:'44'] ] ")
-		def expectedState = new MoneyState(1,2,3,4)
+		def action = parser.compoundParse("SERVICE [4,3,2,1] [ [N:'A', P:'125', C:'99'], [N:'B', P:'33', C:'44'] ] ")
+		def expectedState = new MoneyState(4,3,2,1)
 		assert expectedState.equals(action.availableChange)
 		def expectedInventory = "[ [N:'A', P:'125', C:'99'], [N:'B', P:'33', C:'44'] ]"
 		println "------------ " + action.inventoryState.toString() + "----"
