@@ -5,13 +5,13 @@
 // initial state
 // n = name, p = price, c = count 
 
-SERVICE [50, 50, 50, 50] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'Hostess Fruit Pie', P:'150', C:'10'] ]
+SERVICE [50, 50, 50, 50] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
 
-VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'10'], [N:'DingDongs', P:'100', C:'10'], [N:'Hostess Fruit Pie', P:'150', C:'10'] ]
+VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
 
-SERVICE [200, 50, 50, 50] [ [N:'Cashews', P:'65', C:'10'] ]
+SERVICE [200, 50, 50, 50] [ [N:'A', P:'65', C:'10'] ]
 
-VERIFY [200, 50, 50, 50] [0, 0, 0, 0] [ [N:'Cashews', P:'65', C:'10'] ]
+VERIFY [200, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'] ]
 
 //SERVICE [0, 0, 0, 0] [  ]
 
