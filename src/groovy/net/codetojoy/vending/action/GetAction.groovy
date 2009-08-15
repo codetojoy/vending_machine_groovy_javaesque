@@ -14,7 +14,6 @@ class GetAction {
 	GetAction(String item) { this.item = item }
 		
 	def apply(MachineState machineState) {
-		println "GET ACTION CP"
 		def result = machineState.getItem(item)
 	}
 }

@@ -108,6 +108,8 @@ target( run_all : 'run app for each data file in $data.dir' ) {
     new File(dataDir).eachFile { dataFile ->
         runOneFile(dataFile)
     }    
+    
+    echo( message : "all tests SUCCESSFUL")
 }
 
 setDefaultTarget( run_all )

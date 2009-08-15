@@ -6,6 +6,8 @@
 
 package net.codetojoy.vending
 
+enum ItemState { IN_STOCK, OUT_OF_STOCK, UNKNOWN }
+
 public class InventoryState {
     static final String NAME = 'N'
     static final String PRICE = 'P'
@@ -33,17 +35,22 @@ public class InventoryState {
         return moneyState
     }
 
-    boolean isItemAvailable(String name) {
-        boolean result = false
+    ItemState isItemAvailable(String name) {
+        ItemState result = ItemState.UNKNOWN
 
         def item = findItemByName(name)
-        def count = Integer.parseInt(item[COUNT])
         
-        if (count > 0) result = true
+        if (item != null) {
+            result = ItemState.IN_STOCK
+            
+            def count = Integer.parseInt(item[COUNT])
+
+            if (count == 0) result = ItemState.OUT_OF_STOCK
+        }
         
         return result
     }
-    
+        
     // this is incredibly inefficient!
     String toString() {
         String s = "[ "
@@ -87,7 +94,6 @@ public class InventoryState {
                 break
             }
         }       
-        assert result != null
         
         return result
     }

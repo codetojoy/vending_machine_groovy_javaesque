@@ -24,7 +24,7 @@ class MachineState {
 		
 		def avail = inventoryState.isItemAvailable(itemName)
 		
-		if (avail) {
+		if (avail == ItemState.IN_STOCK) {
 			def price = inventoryState.getPrice(itemName)
 			def sufficientFunds = price.isLessOrEqual(insertedMoney)
 			

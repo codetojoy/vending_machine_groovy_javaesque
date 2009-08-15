@@ -20,11 +20,11 @@ class InventoryStateTestCase extends GroovyTestCase {
 
 	public void testGetItem() {
 		// pre
-		assertTrue inventoryState.isItemAvailable('B')
+		assert ItemState.IN_STOCK == inventoryState.isItemAvailable('B')
 		// test
 		inventoryState.getItem('B')
 		// post
-		assertFalse inventoryState.isItemAvailable('B')
+		assert ItemState.OUT_OF_STOCK == inventoryState.isItemAvailable('B')
 	}
 	
 	public void testGetPrice() {
@@ -39,23 +39,19 @@ class InventoryStateTestCase extends GroovyTestCase {
 	}
 	
 	public void testFindItemByName_No() {
-		try {
-			def result = inventoryState.findItemByName('M')
-			fail("expected assertion error")
-		} catch(Throwable t) {
-			// happy path
-		}
+		def result = inventoryState.findItemByName('M')
+		assert null == result
 	}
 	
-	public void testIsItemAvailable_Yes() {
-		boolean result = inventoryState.isItemAvailable('A')
-		assertTrue result
+	public void testIsItemAvailable_InStock() {
+		assert ItemState.IN_STOCK == inventoryState.isItemAvailable('A')
 	}
 	
-	public void testIsItemAvailable_No() {
-		boolean result = inventoryState.isItemAvailable('C')
-		assertFalse result
+	public void testIsItemAvailable_OutOfStock() {
+		assert ItemState.OUT_OF_STOCK == inventoryState.isItemAvailable('C')
 	}
-
 	
+	public void testIsItemAvailable_Unknown() {
+		assert ItemState.UNKNOWN == inventoryState.isItemAvailable('X')
+	}	
 }

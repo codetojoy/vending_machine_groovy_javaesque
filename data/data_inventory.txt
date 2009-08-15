@@ -9,9 +9,9 @@
 SERVICE [50, 50, 50, 50] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 
-// TODO case: item does not exist
-//GET Z
-//VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
+// case: item does not exist
+GET Z
+VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 
 // case: item out of stock
 GET C
