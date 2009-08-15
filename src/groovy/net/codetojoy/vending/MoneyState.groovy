@@ -1,4 +1,9 @@
 
+// Project: Vending Machine in Groovy
+// Author: Michael Easter
+//
+// http://codetojoy.blogspot.com
+
 package net.codetojoy.vending
 
 class MoneyState {
