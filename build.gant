@@ -13,7 +13,7 @@ cleanDirectory << classDir
 
 // init
 target( init : '' ) { 
-    path( id : 'run.classpath' ) {
+    path( id : 'run_all.classpath' ) {
         pathelement( location : '${classes.dir}' )
         pathelement( location : "${groovyEmbeddedJar}" )
         pathelement( location : "${groovyHome}/lib/groovy-1.6-beta-1.jar" )
@@ -54,7 +54,7 @@ target( compile : 'compile' ) {
     performCompile( '${test.src.dir}' )
 }
 
-target( test : 'run all tests' ) {
+target( test : 'run_all all tests' ) {
     depends( compile ) 
     
     ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
@@ -74,27 +74,41 @@ target( test : 'run all tests' ) {
     }
 }
 
-// runs each data file in $data.dir
-target( run : 'run app for each data file in $data.dir' ) {
-    depends( compile ) 
-    
-    new File(dataDir).eachFile { dataFile ->
-        def errorLog = new File("error.log")
-        errorLog.delete()
-        
-        ant.java( classname:"${mainApp}" ) {
-            ant.classpath() {
-                ant.pathelement( location : '${classes.dir}')
-                ant.path( refid : 'run.classpath' )
-            }
-            ant.arg( value: dataFile )
-        }
+final runOneFile = { dataFile ->
+    def errorLog = new File("error.log")
+    errorLog.delete()
 
-        if (errorLog.exists()) {
-            ant.fail(message : "found error.log for file: $dataFile")
-        }                 
+    ant.java( classname:"${mainApp}" ) {
+        ant.classpath() {
+            ant.pathelement( location : '${classes.dir}')
+            ant.path( refid : 'run_all.classpath' )
+        }
+        ant.arg( value: dataFile )
+    }
+
+    if (errorLog.exists()) {
+        ant.fail(message : "found error.log for file: $dataFile")
     }    
 }
 
-setDefaultTarget( run )
+// runs one file $data.dir, specified by $data.file
+target( run : '// runs one file $data.dir, specified by $data.file' ) {
+    depends( compile ) 
+    
+    def file = ant.project.properties.'data.file'
+    def dataFile = new File(dataDir + "/" + file)
+    
+    runOneFile(dataFile)
+}
+
+// runs each data file in $data.dir
+target( run_all : 'run app for each data file in $data.dir' ) {
+    depends( compile ) 
+    
+    new File(dataDir).eachFile { dataFile ->
+        runOneFile(dataFile)
+    }    
+}
+
+setDefaultTarget( run_all )
 
