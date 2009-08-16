@@ -25,7 +25,6 @@ public class InventoryState {
         item[COUNT] = "$newCount"
     }
     
-    // TODO: may not need moneyState as return type
     MoneyState getPrice(String name) {
         def priceStr = findItemByName(name).get(PRICE)
         def price = Integer.parseInt( priceStr )

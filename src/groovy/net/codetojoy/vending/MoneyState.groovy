@@ -54,8 +54,8 @@ class MoneyState {
 		return result
 	}
 
-	// returns this + rhs, not normalized
-	MoneyState subtract2(MoneyState rhs) {
+	// returns this - rhs, not normalized
+	MoneyState subtract(MoneyState rhs) {
 		int numNickels = this.numNickels - rhs.numNickels
 		int numDimes = this.numDimes - rhs.numDimes
 		int numQuarters = this.numQuarters - rhs.numQuarters
@@ -63,41 +63,18 @@ class MoneyState {
 		def result = new MoneyState(numDollars, numQuarters, numDimes, numNickels)
 		return result
 	}
-		
-	// TODO: obsolete ?
-	// returns this - x, normalized
-	MoneyState subtract(MoneyState x) {
-		int difference = this.total - x.total
-		
-		if (difference < 0) {
-			throw IllegalStateException("insufficient funds")
-		}
-		
-		return new MoneyState(difference)
-	}
-
-	// TODO: obsolete ?
-    protected def getAsList() {
-        def list = []
-        list << numDollars
-        list << numQuarters
-        list << numDimes
-        list << numNickels
-        return list
-    }
-    
+		    
 	// returns this - price, accounting for coin resources offered by 'this'
-
 	def getCost(MoneyState price) {
 	
-        def e = factor(price.total, numDollars, 100)
-        def dollars = e.times
-        e = factor(e.remainingPrice, numQuarters, 25)
-        def quarters = e.times
-        e = factor(e.remainingPrice, numDimes, 10)
-        def dimes = e.times
-        e = factor(e.remainingPrice, numNickels, 5)
-        def nickels = e.times
+        def exp = factor(price.total, numDollars, 100)
+        def dollars = exp.times
+        exp = factor(exp.remainingPrice, numQuarters, 25)
+        def quarters = exp.times
+        exp = factor(exp.remainingPrice, numDimes, 10)
+        def dimes = exp.times
+        exp = factor(exp.remainingPrice, numNickels, 5)
+        def nickels = exp.times
 	    
 	    def cost = new MoneyState(dollars, quarters, dimes, nickels)
 	    return cost

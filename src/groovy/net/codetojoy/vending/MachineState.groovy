@@ -36,15 +36,12 @@ class MachineState {
 
 	protected void execTransaction(def price) {
 	    def cost = insertedMoney.getCost(price)
-	    this.insertedMoney = insertedMoney.subtract2(cost)
+	    this.insertedMoney = insertedMoney.subtract(cost)
 	    this.availableChange = availableChange.add(cost)	    
 	}
 	
-    // TODO: clean this up
 	String toString() {
-		def s = availableChange.toString() + " " + insertedMoney.toString() + " " + inventoryState.toString()
-
-		return s
+		return "${availableChange.toString()} ${insertedMoney.toString()} ${inventoryState.toString()}"
 	}
 }
 

@@ -17,6 +17,5 @@ class CoinAction {
 	
 	def apply(MachineState machineState) {
 		machineState.addInsertedMoney(moneyState)
-/*		println "coinAction state = " + machineState.toString()
-*/	}
+    }
 }
