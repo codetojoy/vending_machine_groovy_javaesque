@@ -26,9 +26,9 @@ class Parser {
 		
 		def inputs = line.split(" , ")
 		
-		for( input in inputs ) {
+		inputs.each { input -> 
 			actions << parseOneInput(input)
-		}
+	    }
 			
 		return actions
 	}
@@ -107,8 +107,7 @@ class Parser {
 	
 	    if (action == null) action = parseGet(s)
 	    if (action == null) action = parseVerify(s)
-			
-		println "ACTION = " + action		
+					
 		return action		
 	}
 }

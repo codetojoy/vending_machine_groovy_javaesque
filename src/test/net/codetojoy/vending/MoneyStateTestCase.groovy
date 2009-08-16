@@ -94,20 +94,20 @@ class MoneyStateTestCase extends GroovyTestCase {
 	
 	void testDivAndRemainder_Basic() {
 		def result = moneyState.divAndRemainder(1250, 100)
-		assert 12 == result['div']
-		assert 50 == result['remainder']
+		assert 12 == result.div
+		assert 50 == result.remainder
 	}
 
 	void testDivAndRemainder_NoDiv() {
 		def result = moneyState.divAndRemainder(50, 100)
-		assert 0 == result['div']
-		assert 50 == result['remainder']
+		assert 0 == result.div
+		assert 50 == result.remainder
 	}
 
 	void testDivAndRemainder_NoRemainder() {
 		def result = moneyState.divAndRemainder(500, 100)
-		assert 5 == result['div']
-		assert 0 == result['remainder']
+		assert 5 == result.div
+		assert 0 == result.remainder
 	}
 	
 	void testIntCtor_Nickels() {

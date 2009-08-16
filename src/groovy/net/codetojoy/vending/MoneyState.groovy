@@ -86,6 +86,7 @@ class MoneyState {
 	
 	// ------------------------------------------------------------------
 
+    // TODO: clean this up
     protected def numTimes = { def total, n, amount ->
         def result = 0
 
@@ -110,7 +111,7 @@ class MoneyState {
         if (price > 0) {
             if (numCoins > 0) {
                 def n = numTimes(price, numCoins, amount)
-                expando.times= n
+                expando.times = n
                 expando.remainingPrice = (price - (n * amount))
             } 
         } 
@@ -121,19 +122,19 @@ class MoneyState {
 	// assume total is in cents
 	protected MoneyState(int total) {
 		def dollarResult = divAndRemainder(total, 100)
-		this.numDollars = dollarResult['div']
-		int remainder = dollarResult['remainder']
+		this.numDollars = dollarResult.div
+		int remainder = dollarResult.remainder
 		
 		def quarterResult = divAndRemainder(remainder, 25)
-		this.numQuarters = quarterResult['div']
-		remainder = quarterResult['remainder']
+		this.numQuarters = quarterResult.div
+		remainder = quarterResult.remainder
 		
 		def dimeResult = divAndRemainder(remainder, 10)
-		this.numDimes = dimeResult['div']
-		remainder = dimeResult['remainder']
+		this.numDimes = dimeResult.div
+		remainder = dimeResult.remainder
 		
 		def nickelResult = divAndRemainder(remainder, 5)
-		this.numNickels = nickelResult['div']
+		this.numNickels = nickelResult.div
 		// drop pennies
 	}	
 	
@@ -144,14 +145,12 @@ class MoneyState {
 		result += numDollars * 100
 	}
 
-    // TODO: use expando or list
-	protected Map divAndRemainder(int total, int divisor) {
-		def result = new HashMap() // can't I use {} here ?
+	protected def divAndRemainder(int total, int divisor) {
+		def result = new Expando()
 		int div = ((total / divisor) as int)
 		int remainder = total % divisor
-		result.put('div', div)
-		result.put('remainder', remainder)
-		println "${total} / ${divisor} = ${result['div']} with ${result['remainder']}"
+		result.div = div
+		result.remainder = remainder
 		return result
 	}	
 }

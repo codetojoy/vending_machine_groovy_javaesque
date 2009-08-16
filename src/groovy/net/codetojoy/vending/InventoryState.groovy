@@ -6,7 +6,10 @@
 
 package net.codetojoy.vending
 
+
 public class InventoryState {
+    // an item is a map with these keys: 
+    // Note: arguably a Groovier way would be to use an Expando
     static final String NAME = 'N'
     static final String PRICE = 'P'
     static final String COUNT = 'C'
@@ -15,11 +18,12 @@ public class InventoryState {
     
     InventoryState(def inventory) {
         this.inventory = inventory
+        // normalize output string via sort
+        if (this.inventory) { this.inventory.sort { it[NAME] } }
     }
 
     void getItem(String name) {
         def item = findItemByName(name)
-        assert item != null
         
         int newCount = getCount(name) - 1     
         item[COUNT] = "$newCount"
@@ -56,48 +60,22 @@ public class InventoryState {
         return result
     }
         
-    // this is incredibly inefficient!
     String toString() {
         String s = "[ "
-        
-        // build name list to sort
-        
-        def list = []
-        
-        for (item in inventory) {
-            list << item[NAME]
-        }
-                
-        list.sort()
-        def noCommaIndex = list.size() - 1 
-        def count = 0
-        
-        for (name in list) {
-            println "name = " + name
-            def item = findItemByName(name)
-            println "item = " + item
-            s += "[${NAME}:'${item[NAME]}', ${PRICE}:'${item[PRICE]}', ${COUNT}:'${item[COUNT]}']"
-            if (count != noCommaIndex) s += ", "
-            count++
+                                
+        // we sorted in the ctor
+        inventory.each { item ->
+            s += "[${NAME}:'${item[NAME]}', ${PRICE}:'${item[PRICE]}', ${COUNT}:'${item[COUNT]}'], "
         }
         
-        s += " ]"
+        // snip trailing comma
+        def t = s[0 .. s.length() - 3]
+        t += " ]"
                 
-        return s
+        return t
     }
     
     protected findItemByName(def name) {
-        def result = null
-        
-        for (item in inventory) {
-            assert item.keySet().contains(NAME)
-            
-            if (item[NAME] == name) {
-                result = item
-                break
-            }
-        }       
-        
-        return result
+        return inventory.find { item -> item[NAME] == name }
     }
 }

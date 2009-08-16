@@ -4,10 +4,14 @@
 
 This is a work-in-progress for the Vending Machine example, as highlighted by the Lambda Lounge.
 
-This example uses Groovy, but in a fairly straight-up, Java-esque way.
-Not a lot of dynamic or functional style in this project.
+This example uses Groovy, but in a fairly straight-up, Java-esque way. e.g. each action is an object
+This is not a hardcore MOP example. However it does use Expando (sparingly) and the elegant closure iterations.
 
-However, it does use the evaluation of strings (as code), and the testing tools.
+The main difference from Java is the evaluation of strings as code. 
+
+e.g. The following:
+
+[ N:'A', P:'65', C:'10' ] is a bona fide Groovy map.
 
 *** Requirements
 
@@ -37,3 +41,4 @@ http://gant.codehaus.org/
 -- you really have to trust the tests (see above). they become intrinsic to the experience
 -- very old idea, but evaluating data as code is extremely powerful
 -- it takes time to set up Gant, JUnit, etc, for the first time, but vital
+-- READ the error output carefully. I often make faulty assumptions about where a problem is, and waste time.

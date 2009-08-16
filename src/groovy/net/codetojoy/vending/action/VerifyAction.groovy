@@ -24,6 +24,5 @@ class VerifyAction {
 		}
 		
 		assert expected == actual
-		println "verification OK"
 	}
 }
