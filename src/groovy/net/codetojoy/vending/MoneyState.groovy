@@ -147,10 +147,8 @@ class MoneyState {
 
     protected def divAndRemainder(int total, int divisor) {
         def result = new Expando()
-        int div = ((total / divisor) as int)
-        int remainder = total % divisor
-        result.div = div
-        result.remainder = remainder
+        result.div = ((total / divisor) as int)
+        result.remainder = total % divisor
         return result
     }    
 }
