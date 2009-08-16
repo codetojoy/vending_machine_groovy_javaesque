@@ -6,8 +6,6 @@
 
 package net.codetojoy.vending
 
-enum ItemState { IN_STOCK, OUT_OF_STOCK, UNKNOWN }
-
 public class InventoryState {
     static final String NAME = 'N'
     static final String PRICE = 'P'
@@ -22,12 +20,12 @@ public class InventoryState {
     void getItem(String name) {
         def item = findItemByName(name)
         assert item != null
-    
-        def count = Integer.parseInt(item[COUNT])
-        def newCount = count - 1     
-        item[COUNT] = "${newCount}"
+        
+        int newCount = getCount(name) - 1     
+        item[COUNT] = "$newCount"
     }
     
+    // TODO: may not need moneyState as return type
     MoneyState getPrice(String name) {
         def priceStr = findItemByName(name).get(PRICE)
         def price = Integer.parseInt( priceStr )
@@ -35,17 +33,25 @@ public class InventoryState {
         return moneyState
     }
 
-    ItemState isItemAvailable(String name) {
-        ItemState result = ItemState.UNKNOWN
+    int getCount(String name) {
+        def item = findItemByName(name)
+        assert item != null
+    
+        int count = Integer.parseInt(item[COUNT])
+        return count
+    }
+    
+    ItemRequestState isItemAvailable(String name) {
+        ItemRequestState result = ItemRequestState.UNKNOWN
 
         def item = findItemByName(name)
         
         if (item != null) {
-            result = ItemState.IN_STOCK
+            result = ItemRequestState.IN_STOCK
             
             def count = Integer.parseInt(item[COUNT])
 
-            if (count == 0) result = ItemState.OUT_OF_STOCK
+            if (count == 0) result = ItemRequestState.OUT_OF_STOCK
         }
         
         return result
@@ -77,9 +83,7 @@ public class InventoryState {
         }
         
         s += " ]"
-        
-        println "size FINAL " + s.length()
-        
+                
         return s
     }
     

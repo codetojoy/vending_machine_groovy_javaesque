@@ -48,7 +48,7 @@ final performCompile = { sourceDir ->
 
 // compile
 target( compile : 'compile' ) {
-    depends( init, clean )
+    depends( init )
 
     performCompile( '${src.dir}' )
     performCompile( '${test.src.dir}' )

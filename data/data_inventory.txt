@@ -1,6 +1,6 @@
 
 // NOTE: must separate commands with " , " (spaces)
-// commands are not case sensitive
+// commands are not Usecase sensitive
 //
 // initial state
 // N = name, P = price, C = count 
@@ -9,20 +9,19 @@
 SERVICE [50, 50, 50, 50] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 
-// case: item does not exist
+// Usecase: item does not exist
 GET Z
 VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 
-// case: item out of stock
+// Usecase: item out of stock
 GET C
 VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 
-// case: item in stock, exact change
+// Usecase: item in stock, exact change
 Q , Q , D , N , GET A
 VERIFY [50, 52, 51, 51] [0, 0, 0, 0] [ [N:'A', P:'65', C:'9'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 
-// TODO: this returns dollars and seems to normalize the availableChange
-// case: item in stock, not exact change
-//Q , Q , D , N , $ , GET A
-//VERIFY [51, 51, 54, 50] [0, 0, 0, 1] [ [N:'A', P:'65', C:'9'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
+// Usecase: item in stock, not exact change
+Q , Q , D , N , $ , GET A
+VERIFY [50, 54, 52, 52] [1, 0, 0, 0] [ [N:'A', P:'65', C:'8'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'0'] ]
 

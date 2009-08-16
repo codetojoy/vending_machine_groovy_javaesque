@@ -53,7 +53,18 @@ class MoneyState {
 		def result = new MoneyState(numDollars, numQuarters, numDimes, numNickels)
 		return result
 	}
-	
+
+	// returns this + rhs, not normalized
+	MoneyState subtract2(MoneyState rhs) {
+		int numNickels = this.numNickels - rhs.numNickels
+		int numDimes = this.numDimes - rhs.numDimes
+		int numQuarters = this.numQuarters - rhs.numQuarters
+		int numDollars = this.numDollars - rhs.numDollars
+		def result = new MoneyState(numDollars, numQuarters, numDimes, numNickels)
+		return result
+	}
+		
+	// TODO: obsolete ?
 	// returns this - x, normalized
 	MoneyState subtract(MoneyState x) {
 		int difference = this.total - x.total
@@ -64,12 +75,71 @@ class MoneyState {
 		
 		return new MoneyState(difference)
 	}
+
+	// TODO: obsolete ?
+    protected def getAsList() {
+        def list = []
+        list << numDollars
+        list << numQuarters
+        list << numDimes
+        list << numNickels
+        return list
+    }
+    
+	// returns this - price, accounting for coin resources offered by 'this'
+
+	def getCost(MoneyState price) {
+	
+        def e = factor(price.total, numDollars, 100)
+        def dollars = e.times
+        e = factor(e.remainingPrice, numQuarters, 25)
+        def quarters = e.times
+        e = factor(e.remainingPrice, numDimes, 10)
+        def dimes = e.times
+        e = factor(e.remainingPrice, numNickels, 5)
+        def nickels = e.times
+	    
+	    def cost = new MoneyState(dollars, quarters, dimes, nickels)
+	    return cost
+	}
 	
 	String toString() {
 		return "[${numDollars}, ${numQuarters}, ${numDimes}, ${numNickels}]"
 	}
 	
 	// ------------------------------------------------------------------
+
+    protected def numTimes = { def total, n, amount ->
+        def result = 0
+
+        if (total >= amount && n > 0) {
+            def tmpTotal = total
+            for (i in 1..n) {
+                if (tmpTotal >= amount) {
+                    result++
+                    tmpTotal -= amount
+                }
+            }
+        }
+
+        return result
+    }
+
+    protected def factor = { def price, numCoins, amount ->
+        def expando  = new Expando()
+        expando.times = 0
+        expando.remainingPrice = price
+
+        if (price > 0) {
+            if (numCoins > 0) {
+                def n = numTimes(price, numCoins, amount)
+                expando.times= n
+                expando.remainingPrice = (price - (n * amount))
+            } 
+        } 
+
+        return expando
+    }
 
 	// assume total is in cents
 	protected MoneyState(int total) {
@@ -97,6 +167,7 @@ class MoneyState {
 		result += numDollars * 100
 	}
 
+    // TODO: use expando or list
 	protected Map divAndRemainder(int total, int divisor) {
 		def result = new HashMap() // can't I use {} here ?
 		int div = ((total / divisor) as int)

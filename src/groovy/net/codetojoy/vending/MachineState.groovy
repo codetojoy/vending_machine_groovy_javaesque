@@ -6,10 +6,6 @@
 
 package net.codetojoy.vending
 
-enum Input { NICKEL, DIME, QUARTER, DOLLAR, COIN_RETURN, SERVICE, GET }
-
-enum Output { NICKEL, DIME, QUARTER, VEND }
-
 class MachineState {
 	InventoryState inventoryState = new InventoryState()
 	MoneyState availableChange = MoneyState.ZERO
@@ -24,22 +20,27 @@ class MachineState {
 		
 		def avail = inventoryState.isItemAvailable(itemName)
 		
-		if (avail == ItemState.IN_STOCK) {
+		if (avail == ItemRequestState.IN_STOCK) {
 			def price = inventoryState.getPrice(itemName)
 			def sufficientFunds = price.isLessOrEqual(insertedMoney)
 			
 			if (sufficientFunds) {
-				inventoryState.getItem(itemName)
-				this.insertedMoney = insertedMoney.subtract(price)
-				this.availableChange = availableChange.add(price)
-				// TODO: return change, normalized
+			    execTransaction(price)
+			    inventoryState.getItem(itemName)
 				result = true
 			}
 		}
 		
 		return result
 	}
-		
+
+	protected void execTransaction(def price) {
+	    def cost = insertedMoney.getCost(price)
+	    this.insertedMoney = insertedMoney.subtract2(cost)
+	    this.availableChange = availableChange.add(cost)	    
+	}
+	
+    // TODO: clean this up
 	String toString() {
 		def s = availableChange.toString() + " " + insertedMoney.toString() + " " + inventoryState.toString()
 

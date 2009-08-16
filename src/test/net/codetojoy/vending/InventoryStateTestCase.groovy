@@ -18,13 +18,17 @@ class InventoryStateTestCase extends GroovyTestCase {
 		inventoryState = new InventoryState(items) 
 	}
 
+    public void testGetCount() {
+        assert 10 == inventoryState.getCount('A')
+    }
+    
 	public void testGetItem() {
 		// pre
-		assert ItemState.IN_STOCK == inventoryState.isItemAvailable('B')
+		assert ItemRequestState.IN_STOCK == inventoryState.isItemAvailable('B')
 		// test
 		inventoryState.getItem('B')
 		// post
-		assert ItemState.OUT_OF_STOCK == inventoryState.isItemAvailable('B')
+		assert ItemRequestState.OUT_OF_STOCK == inventoryState.isItemAvailable('B')
 	}
 	
 	public void testGetPrice() {
@@ -44,14 +48,15 @@ class InventoryStateTestCase extends GroovyTestCase {
 	}
 	
 	public void testIsItemAvailable_InStock() {
-		assert ItemState.IN_STOCK == inventoryState.isItemAvailable('A')
+		def result = inventoryState.isItemAvailable('A')
+		assert ItemRequestState.IN_STOCK == result
 	}
 	
 	public void testIsItemAvailable_OutOfStock() {
-		assert ItemState.OUT_OF_STOCK == inventoryState.isItemAvailable('C')
+		assert ItemRequestState.OUT_OF_STOCK == inventoryState.isItemAvailable('C')
 	}
 	
 	public void testIsItemAvailable_Unknown() {
-		assert ItemState.UNKNOWN == inventoryState.isItemAvailable('X')
+		assert ItemRequestState.UNKNOWN == inventoryState.isItemAvailable('X')
 	}	
 }
