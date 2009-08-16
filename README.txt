@@ -1,8 +1,9 @@
 
-
 *** Introduction
 
 This is a work-in-progress for the Vending Machine example, as highlighted by the Lambda Lounge.
+
+http://lambdalounge.org/meeting-archive/
 
 This example uses Groovy, but in a fairly straight-up, Java-esque way. e.g. each action is an object
 This is not a hardcore MOP example. However it does use Expando (sparingly) and the elegant closure iterations.
