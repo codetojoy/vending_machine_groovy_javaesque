@@ -26,13 +26,13 @@ file.eachLine { line ->
             } catch(Throwable t) {
                 def msg1 = ">>>>>>> ERROR! at line ${lineCount}. type ${t.class} msg ${t.message}"
                 def msg2 = ">>>>>>> ERROR! for line ${input}"
-				println msg1
-				println msg2
-				def runLog = new File("error.log").newWriter()
-				runLog << msg1
-				runLog << msg2
-				runLog.close()
-				System.exit(-1)
+                println msg1
+                println msg2
+                def runLog = new File("error.log").newWriter()
+                runLog << msg1
+                runLog << msg2
+                runLog.close()
+                System.exit(-1)
             }
         }
     }

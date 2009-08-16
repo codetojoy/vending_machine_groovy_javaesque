@@ -9,16 +9,16 @@ package net.codetojoy.vending.action
 import net.codetojoy.vending.*
 
 class ServiceAction {
-	def availableChange = null
-	def inventoryState = null
+    def availableChange = null
+    def inventoryState = null
 
-	ServiceAction(MoneyState moneyState, InventoryState inventory) { 
-		this.availableChange = moneyState 
-		this.inventoryState = inventory
-	}
-		
-	def apply(def machineState) {
-		machineState.availableChange = availableChange
-		machineState.inventoryState = inventoryState
-	}
+    ServiceAction(MoneyState moneyState, InventoryState inventory) { 
+        this.availableChange = moneyState 
+        this.inventoryState = inventory
+    }
+        
+    def apply(def machineState) {
+        machineState.availableChange = availableChange
+        machineState.inventoryState = inventoryState
+    }
 }
