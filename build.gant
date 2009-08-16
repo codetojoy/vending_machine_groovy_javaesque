@@ -54,7 +54,7 @@ target( compile : 'compile' ) {
     performCompile( '${test.src.dir}' )
 }
 
-target( test : 'run_all all tests' ) {
+target( test : 'execute all tests' ) {
     depends( compile ) 
     
     ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
@@ -92,7 +92,7 @@ final runOneFile = { dataFile ->
 }
 
 // runs one file $data.dir, specified by $data.file
-target( run : '// runs one file $data.dir, specified by $data.file' ) {
+target( run : 'run app for file in $data.dir, specified by $data.file' ) {
     depends( compile ) 
     
     def file = ant.project.properties.'data.file'
