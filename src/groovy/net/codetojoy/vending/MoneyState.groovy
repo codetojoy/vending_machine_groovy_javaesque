@@ -37,7 +37,7 @@ class MoneyState {
     
     boolean equals(MoneyState rhs) {
         return (this.numNickels == rhs.numNickels) && (this.numDimes == rhs.numDimes)
-               (this.numQuarters = rhs.numQuarters) && (this.numDollars == rhs.numDollars)
+               (this.numQuarters == rhs.numQuarters) && (this.numDollars == rhs.numDollars)
     }
     
     boolean isLessOrEqual(MoneyState rhs) {
