@@ -74,6 +74,24 @@ target( test : 'execute all tests' ) {
     }
 }
 
+target( test_one : 'execute one test specified by $test.file' ) {
+    depends( compile ) 
+    
+    ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
+        ant.classpath() {
+            ant.pathelement( location : '${classes.dir}')
+            ant.path( refid : 'test.classpath' )
+            ant.fileset( dir : "${groovyHome}/lib") {
+                    ant.include( name : '**/*.jar' )
+            }
+        }
+
+        def test = ant.project.properties.'test.file'
+        def pkg = ant.project.properties.'main.package'
+        ant.test( name : "${pkg}.${test}" ) {}
+    }
+}
+
 final runOneFile = { dataFile ->
     def errorLog = new File("error.log")
     errorLog.delete()
