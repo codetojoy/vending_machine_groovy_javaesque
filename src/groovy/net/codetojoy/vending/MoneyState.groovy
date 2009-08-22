@@ -91,12 +91,10 @@ class MoneyState {
         expando.times = 0
         expando.remainingPrice = price
 
-        if (price > 0) {
-            if (numCoins > 0) {
-                def naturalDiv = ((price / amount) as int)
-                expando.times = Math.min(naturalDiv, numCoins)
-                expando.remainingPrice = (price - (expando.times * amount))
-            } 
+        if (price > 0 && numCoins > 0) {
+            def naturalDiv = ((price / amount) as int)
+            expando.times = Math.min(naturalDiv, numCoins)
+            expando.remainingPrice = (price - (expando.times * amount))
         } 
 
         return expando
