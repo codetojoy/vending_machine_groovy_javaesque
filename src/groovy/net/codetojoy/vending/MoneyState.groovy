@@ -86,23 +86,6 @@ class MoneyState {
     
     // ------------------------------------------------------------------
 
-    // TODO: clean this up
-    protected def numTimes = { def total, n, amount ->
-        def result = 0
-
-        if (total >= amount && n > 0) {
-            def tmpTotal = total
-            for (i in 1..n) {
-                if (tmpTotal >= amount) {
-                    result++
-                    tmpTotal -= amount
-                }
-            }
-        }
-
-        return result
-    }
-
     protected def factor = { def price, numCoins, amount ->
         def expando  = new Expando()
         expando.times = 0
@@ -110,9 +93,9 @@ class MoneyState {
 
         if (price > 0) {
             if (numCoins > 0) {
-                def n = numTimes(price, numCoins, amount)
-                expando.times = n
-                expando.remainingPrice = (price - (n * amount))
+                def naturalDiv = ((price / amount) as int)
+                expando.times = Math.min(naturalDiv, numCoins)
+                expando.remainingPrice = (price - (expando.times * amount))
             } 
         } 
 

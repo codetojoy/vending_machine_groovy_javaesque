@@ -39,23 +39,7 @@ class MoneyStateTestCase extends GroovyTestCase {
         def expected = new MoneyState(0,0,0,28)
         assert expected == cost
     }
-        
-    void testNumTimes_zeroN() {
-        assert 0 == moneyState.numTimes(100, 0, 10)
-    }
-
-    void testNumTimes_normal() {
-        assert 3 == moneyState.numTimes(121, 3, 25)
-    }
-
-    void testNumTimes_limitN() {
-        assert 3 == moneyState.numTimes(121, 3, 5)
-    }
-
-    void testNumTimes_NLarge() {
-        assert 12 == moneyState.numTimes(121, 30, 10)
-    }
-    
+            
     void testFactor_NoCoins() {
         def factor = moneyState.factor(100,0,10) 
         assert 0 == factor.times

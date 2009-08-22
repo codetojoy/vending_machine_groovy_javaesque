@@ -61,12 +61,11 @@ public class InventoryState {
     }
         
     String toString() {
-        String s = "[ "
-                                
         // we sorted in the ctor
-        inventory.each { item ->
-            s += "[${NAME}:'${item[NAME]}', ${PRICE}:'${item[PRICE]}', ${COUNT}:'${item[COUNT]}'], "
-        }
+        
+        String s = inventory.inject ("[ ", { value, item ->
+            value += "[${NAME}:'${item[NAME]}', ${PRICE}:'${item[PRICE]}', ${COUNT}:'${item[COUNT]}'], "
+        })
         
         // snip trailing comma
         def t = s[0 .. s.length() - 3]
