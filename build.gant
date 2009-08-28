@@ -23,7 +23,9 @@ target( init : '' ) {
     path( id : 'test.classpath' ) {
         pathelement( location : '${classes.dir}' )
         pathelement( location : "${groovyEmbeddedJar}" )
-        pathelement( location : "${groovyHome}/groovy-1.6-4/lib/junit-3.8.2.jar" )
+        ant.fileset( dir : "${groovyHome}/lib") {
+                ant.include( name : '**/*.jar' )
+        }
     }    
     path( id : 'build.classpath' ) {
         pathelement( location : '${classes.dir}' )
@@ -56,11 +58,7 @@ target( test : 'execute all tests' ) {
     
     ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
         ant.classpath() {
-            ant.pathelement( location : '${classes.dir}')
             ant.path( refid : 'test.classpath' )
-            ant.fileset( dir : "${groovyHome}/lib") {
-                    ant.include( name : '**/*.jar' )
-            }
         }
 
         ant.batchtest( fork:'yes' ) {
@@ -76,11 +74,7 @@ target( test_one : 'execute one test specified by $test.file' ) {
     
     ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
         ant.classpath() {
-            ant.pathelement( location : '${classes.dir}')
             ant.path( refid : 'test.classpath' )
-            ant.fileset( dir : "${groovyHome}/lib") {
-                    ant.include( name : '**/*.jar' )
-            }
         }
 
         def test = ant.project.properties.'test.file'
