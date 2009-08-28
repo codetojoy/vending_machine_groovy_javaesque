@@ -6,10 +6,12 @@ final mainApp = ant.project.properties.'main.app'
 final dataDir = ant.project.properties.'data.dir'
 final groovyHome = ant.project.properties.'groovy.home'
 final groovyEmbeddedJar = groovyHome + ant.project.properties.'groovy.embedded.jar'
+final reportDir = ant.project.properties.'report.dir'
 
 // clean (implicit target)
 includeTargets << gant.targets.Clean
 cleanDirectory << classDir
+cleanDirectory << reportDir
 
 // init
 target( init : '' ) { 
@@ -31,6 +33,7 @@ target( init : '' ) {
         pathelement( location : '${classes.dir}' )
         pathelement( location : "${groovyEmbeddedJar}")
     }    
+    ant.mkdir( dir : reportDir )
 }
 
 final performCompile = { sourceDir ->
@@ -61,7 +64,8 @@ target( test : 'execute all tests' ) {
             ant.path( refid : 'test.classpath' )
         }
 
-        ant.batchtest( fork:'yes' ) {
+        ant.batchtest( fork:'yes', todir:"${reportDir}" ) {
+            formatter(type:'plain')
             ant.fileset( dir : classDir ) {
                 ant.include( name : '**/*Test*.*' )
             }
@@ -72,14 +76,16 @@ target( test : 'execute all tests' ) {
 target( test_one : 'execute one test specified by $test.file' ) {
     depends( compile ) 
     
-    ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
+    ant.junit( printsummary:'yes', haltonfailure:'yes') {
         ant.classpath() {
             ant.path( refid : 'test.classpath' )
         }
 
         def test = ant.project.properties.'test.file'
         def pkg = ant.project.properties.'main.package'
-        ant.test( name : "${pkg}.${test}" ) {}
+        ant.test( name : "${pkg}.${test}", outfile:"${reportDir}/junit_report") {
+            formatter(type:'plain')
+        }
     }
 }
 
