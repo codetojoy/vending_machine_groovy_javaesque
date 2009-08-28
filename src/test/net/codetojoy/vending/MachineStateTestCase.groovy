@@ -28,7 +28,7 @@ class MachineStateTestCase extends GroovyTestCase {
         assert false == result
     }
 
-    void xtestGetItem_NormalTransaction() {
+    void testGetItem_NormalTransaction() {
         // test
         machineState.insertedMoney = new MoneyState(1,0,5,3)
         def result = machineState.getItem('A')

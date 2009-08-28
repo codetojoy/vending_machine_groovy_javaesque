@@ -1,7 +1,7 @@
 
 // NOTE: must separate commands with " , " (spaces)
-// commands are not Usecase sensitive
-//
+// only selectors are case sensitive (eg 'A', 'B')
+
 // initial state
 // N = name, P = price, C = count 
 

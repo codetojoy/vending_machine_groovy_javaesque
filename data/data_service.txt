@@ -1,9 +1,9 @@
 
-// NOTE: commands require separation with " , " (spaces)
-// commands are not case sensitive
-//
+// NOTE: must separate commands with " , " (spaces)
+// only selectors are case sensitive (eg 'A', 'B')
+
 // initial state
-// n = name, p = price, c = count 
+// N = name, P = price, C = count 
 
 SERVICE [50, 50, 50, 50] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
 

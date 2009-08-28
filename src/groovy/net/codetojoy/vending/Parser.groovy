@@ -71,15 +71,15 @@ class Parser {
     def parseService(String s) {
         def action = null
         
-        def serviceRegEx = /^SERVICE\s*\[(.*)\]\s*\[(.*)\]\s*$/
+        def serviceRegEx = /^SERVICE\s*(\[.*\])\s*(\[.*\])\s*$/
         def m = s =~ serviceRegEx
 
         if (m.matches()) {
-            def coinListStr = "[${m[0][1]}]"
+            def coinListStr = m[0][1]
             def coinList = shell.evaluate(coinListStr)
             def moneyState = new MoneyState(coinList)
             
-            def inventoryStr = "[${m[0][2]}]"
+            def inventoryStr = m[0][2]
             def inventoryMap = shell.evaluate(inventoryStr)
             def inventory = new InventoryState(inventoryMap)
             action = new ServiceAction(moneyState, inventory)
