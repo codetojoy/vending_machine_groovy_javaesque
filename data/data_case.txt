@@ -1,10 +1,9 @@
 
 // NOTE: must separate commands with " , " (spaces)
 // only selectors are case sensitive (eg 'A', 'B')
-//
+
 // initial state
 // N = name, P = price, C = count 
-
 Service [50, 50, 50, 50] [ [n:'A', p:'65', c:'10'], [n:'B', p:'100', c:'10'], [n:'C', p:'150', c:'10'] ]
 
 VERIFY [50, 50, 50, 50] [0, 0, 0, 0] [ [N:'A', P:'65', C:'10'], [N:'B', P:'100', C:'10'], [N:'C', P:'150', C:'10'] ]
