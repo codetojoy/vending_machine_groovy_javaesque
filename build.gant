@@ -62,6 +62,8 @@ target( test : 'execute all tests' ) {
             formatter(type:'plain')
             ant.fileset( dir : classDir ) {
                 ant.include( name : '**/*Test*.*' )
+                // we don't want to test inner closure classes!
+                ant.exclude( name : '**/*_closure*.*')                
             }
         } 
     }
