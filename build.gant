@@ -15,20 +15,14 @@ cleanDirectory << reportDir
 
 // init
 target( init : '' ) { 
-    path( id : 'run.classpath' ) {
+    // contains JUnit and jars for Groovy scripts
+    path( id : 'groovy.classpath' ) {
         pathelement( location : '${classes.dir}' )
         pathelement( location : "${groovyEmbeddedJar}" )    
         ant.fileset( dir : "${groovyHome}/lib") {
             ant.include( name : '**/*.jar' )
         }
     }
-    path( id : 'test.classpath' ) {
-        pathelement( location : '${classes.dir}' )
-        pathelement( location : "${groovyEmbeddedJar}" )
-        ant.fileset( dir : "${groovyHome}/lib") {
-                ant.include( name : '**/*.jar' )
-        }
-    }    
     path( id : 'build.classpath' ) {
         pathelement( location : '${classes.dir}' )
         pathelement( location : "${groovyEmbeddedJar}")
@@ -61,7 +55,7 @@ target( test : 'execute all tests' ) {
     
     ant.junit( printsummary:'yes', haltonfailure:'yes' ) {
         ant.classpath() {
-            ant.path( refid : 'test.classpath' )
+            ant.path( refid : 'groovy.classpath' )
         }
 
         ant.batchtest( fork:'yes', todir:"${reportDir}" ) {
@@ -73,12 +67,13 @@ target( test : 'execute all tests' ) {
     }
 }
 
+// obsolete? 
 target( test_one : 'execute one test specified by $test.file' ) {
     depends( compile ) 
     
     ant.junit( printsummary:'yes', haltonfailure:'yes') {
         ant.classpath() {
-            ant.path( refid : 'test.classpath' )
+            ant.path( refid : 'groovy.classpath' )
         }
 
         def test = ant.project.properties.'test.file'
@@ -96,7 +91,7 @@ final runOneFile = { dataFile ->
     ant.java( classname:"${mainApp}" ) {
         ant.classpath() {
             ant.pathelement( location : '${classes.dir}')
-            ant.path( refid : 'run.classpath' )
+            ant.path( refid : 'groovy.classpath' )
         }
         ant.arg( value: dataFile )
     }
