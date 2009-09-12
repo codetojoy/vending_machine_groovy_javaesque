@@ -1,7 +1,7 @@
 
 *** Introduction
 
-This is a work-in-progress for the Vending Machine example, as highlighted by the Lambda Lounge.
+This is an example for the Vending Machine, as highlighted by the Lambda Lounge.
 
 http://lambdalounge.org/meeting-archive/
 

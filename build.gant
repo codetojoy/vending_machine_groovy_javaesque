@@ -69,23 +69,6 @@ target( test : 'execute all tests' ) {
     }
 }
 
-// obsolete? 
-target( test_one : 'execute one test specified by $test.file' ) {
-    depends( compile ) 
-    
-    ant.junit( printsummary:'yes', haltonfailure:'yes') {
-        ant.classpath() {
-            ant.path( refid : 'groovy.classpath' )
-        }
-
-        def test = ant.project.properties.'test.file'
-        def pkg = ant.project.properties.'main.package'
-        ant.test( name : "${pkg}.${test}", outfile:"${reportDir}/junit_report") {
-            formatter(type:'plain')
-        }
-    }
-}
-
 final runOneFile = { dataFile ->
     def errorLog = new File("error.log")
     errorLog.delete()
@@ -117,9 +100,7 @@ target( run : 'run app for file in $data.dir, specified by $data.file' ) {
 target( run_all : 'run app for each data file in $data.dir' ) {
     depends( compile ) 
         
-    new File(dataDir).eachFile { dataFile ->
-        runOneFile(dataFile)
-    }    
+    new File(dataDir).eachFile { dataFile -> runOneFile(dataFile) }    
     
     echo( message : "all tests SUCCESSFUL")
 }
