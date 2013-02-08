@@ -1,0 +1,74 @@
+
+apply plugin: 'groovy'
+
+configurations {
+    releaseJars
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    groovy 'org.codehaus.groovy:groovy-all:1.6.4'
+    releaseJars 'org.codehaus.groovy:groovy-all:1.6.4'
+}
+
+sourceSets.main.groovy.srcDirs 'src'
+sourceSets.test.groovy.srcDirs 'test'
+
+task init {
+    delete "${buildDir}/jars"
+    mkdir "${buildDir}/jars"
+    delete stagingDir
+    mkdir stagingDir
+}
+
+task copyReleaseJars(type: Copy, dependsOn: 'init') {
+    into "${buildDir}/jars"
+    from configurations.releaseJars
+}
+
+jar.archiveName 'vending.jar'
+jar.manifest {
+    attributes 'Main-Class' : 'net.codetojoy.vending.Main' 
+    attributes 'Class-Path' : 'jars/groovy-all-1.6.4.jar'
+}
+
+task myBuild(dependsOn: ['copyReleaseJars', 'jar']) << {
+    ant.zip(destfile: "${buildDir}/vending.zip") {
+        zipfileset(dir: "${buildDir}/jars", prefix: "jars")
+        zipfileset(file: "${buildDir}/libs/vending.jar")
+    }
+
+    ant.unzip(src: "${buildDir}/vending.zip", dest: stagingDir)
+}
+
+def runOneFile = { dataFile ->
+    def errorLog = new File("error.log")
+    errorLog.delete()
+
+    ant.java(jar: dslJar, fork: "true") {
+        ant.arg(value: dataFile)
+    }
+
+    if (errorLog.exists()) {
+        ant.fail(message : "found error.log for file: $dataFile")
+    } else {
+        println "success!  ${dataFile}"
+    }    
+}
+
+task runOne(dependsOn: 'myBuild') << {
+    def dataFile = new File(dataDir + File.separator + project.dataFile)
+    runOneFile(dataFile)
+}
+
+task runAll(dependsOn: 'myBuild') << {
+    new File(project.dataDir).eachFileRecurse { file ->
+        if (file.isFile()) { 
+             runOneFile(file)
+        }
+    }
+}
+
